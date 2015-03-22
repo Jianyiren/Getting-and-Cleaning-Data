@@ -81,7 +81,17 @@ names(Data)=gsub("^f","frequency_",names(Data))
 
 #5.From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 
+#-NewData
+#subject     Activity      variable                          value
+#  2        STANDING    	time_BodyAccelerator.mean...X	    0.2571778   
+#...
 NewData=melt(Data, id.vars=c("subject","Activity"))
 NewData$value=as.numeric(NewData$value)
-Result=dcast(NewData,subject+Activity~variable,mean)
 
+# build final data frame, called "Result"
+#-Result
+#subject  Activity     time_BodyAccelerator.mean...X	    time_BodyAccelerator.mean...Y	...
+#  1	   LAYING                  	0.2215982	              -0.040513953
+
+Result=dcast(NewData,subject+Activity~variable,mean)
+write.table(Result,"TidyData.txt",row.names = FALSE)
